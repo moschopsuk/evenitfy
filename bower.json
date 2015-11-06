@@ -1,0 +1,19 @@
+{
+  "name": "eventify",
+  "description": "realtime live blogging for lusu media",
+  "main": "server.js",
+  "authors": [
+    "Luke Moscrop"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/moschopsuk/evenitfy",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
