@@ -23,6 +23,11 @@ var dependencies = [
   'underscore'
 ];
 
+
+var config = {
+    bowerDir: './bower_components'
+}
+
 /*
  |--------------------------------------------------------------------------
  | Combine all JS libraries into a single file for fewer HTTP requests.
@@ -31,8 +36,8 @@ var dependencies = [
 
 gulp.task('vendor', function() {
   return gulp.src([
-    'bower_components/jquery/dist/jquery.js',
-    'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+    config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
@@ -95,13 +100,28 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
 
 /*
  |--------------------------------------------------------------------------
+ | Font awesome icons
+ |--------------------------------------------------------------------------
+ */
+gulp.task('icons', function() {
+    return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
+        .pipe(gulp.dest('./public/fonts'));
+});
+
+/*
+ |--------------------------------------------------------------------------
  | Compile SASS stylesheets.
  |--------------------------------------------------------------------------
  */
 gulp.task('styles', function() {
   return gulp.src('app/styles/main.scss')
     .pipe(plumber())
-    .pipe(sass())
+    .pipe(sass({
+        includePaths: [
+            config.bowerDir + '/bootstrap-sass/assets/stylesheets',
+            config.bowerDir + '/font-awesome/scss',
+        ]
+    }))
     .pipe(autoprefixer())
     .pipe(gulpif(production, cssmin()))
     .pipe(gulp.dest('public/css'));
@@ -111,5 +131,5 @@ gulp.task('watch', function() {
   gulp.watch('app/styles/**/*.scss', ['styles']);
 });
 
-gulp.task('default', ['styles', 'vendor', 'browserify-watch', 'watch']);
-gulp.task('build', ['styles', 'vendor', 'browserify']);
+gulp.task('default', ['styles', 'icons', 'vendor', 'browserify-watch', 'watch']);
+gulp.task('build', ['styles', 'icons', 'vendor', 'browserify']);
