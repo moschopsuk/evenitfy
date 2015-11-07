@@ -4,7 +4,7 @@ var gulpif = require('gulp-if');
 var streamify = require('gulp-streamify');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
-var less = require('gulp-less');
+var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
@@ -22,6 +22,21 @@ var dependencies = [
   'react-router',
   'underscore'
 ];
+
+/*
+ |--------------------------------------------------------------------------
+ | Combine all JS libraries into a single file for fewer HTTP requests.
+ |--------------------------------------------------------------------------
+ */
+
+gulp.task('vendor', function() {
+  return gulp.src([
+    'bower_components/jquery/dist/jquery.js',
+    'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+  ]).pipe(concat('vendor.js'))
+    .pipe(gulpif(production, uglify({ mangle: false })))
+    .pipe(gulp.dest('public/js'));
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -78,5 +93,23 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
   }
 });
 
-gulp.task('default', ['browserify-watch']);
-gulp.task('build', ['browserify']);
+/*
+ |--------------------------------------------------------------------------
+ | Compile SASS stylesheets.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('styles', function() {
+  return gulp.src('app/styles/main.scss')
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(autoprefixer())
+    .pipe(gulpif(production, cssmin()))
+    .pipe(gulp.dest('public/css'));
+});
+
+gulp.task('watch', function() {
+  gulp.watch('app/styles/**/*.scss', ['styles']);
+});
+
+gulp.task('default', ['styles', 'vendor', 'browserify-watch', 'watch']);
+gulp.task('build', ['styles', 'vendor', 'browserify']);
