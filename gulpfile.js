@@ -128,7 +128,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('app/styles/**/*.scss', ['styles']);
+  gulp.watch(['app/styles/*.scss', 'app/styles/**/*.scss'], ['styles']);
 });
 
 gulp.task('default', ['styles', 'icons', 'vendor', 'browserify-watch', 'watch']);
