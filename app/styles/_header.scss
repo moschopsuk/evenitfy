@@ -1,0 +1,32 @@
+header {
+    background-color: #37424c;
+    color: #b2b9bf;
+    margin-bottom: 20px;
+}
+
+.navbar-default {
+    background-color: #42186c;
+    color: #b2b9bf;
+    margin-bottom: 0px;
+    border: 0px;
+
+    .navbar-brand {
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.75);
+        font-size: 34px;
+        line-height: 15px;
+        font-family: 'Lobster', cursive;
+        color: #b2b9bf;
+
+        &:hover, &:focus {
+            color: #0099D4;
+        }
+    }
+}
+
+.well {
+    background-color: #fff;
+
+    h2 {
+        margin-top: 5px;
+    }
+}
