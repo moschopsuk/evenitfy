@@ -8,7 +8,7 @@ var React = require('react');
 var ReactDOM = require('react-dom/server');
 var Router = require('react-router');
 var RoutingContext = Router.RoutingContext;
-var routes = require('./app/routes');
+var routes = require('./app/config/routes');
 var swig = require('swig');
 
 var app = express();
