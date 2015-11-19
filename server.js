@@ -15,6 +15,16 @@ var app = express();
 
 env(__dirname + '/.env');
 
+//DB
+mongoose.connection.on('error', console.log);
+mongoose.connection.on('disconnected', connect);
+connect();
+
+function connect () {
+    var options = { server: { socketOptions: { keepAlive: 1 } } };
+    mongoose.connect(process.env.MONGO_DB, options);
+}
+
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
