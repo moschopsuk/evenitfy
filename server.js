@@ -13,6 +13,8 @@ var swig = require('swig');
 
 var app = express();
 
+env(__dirname + '/.env');
+
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
