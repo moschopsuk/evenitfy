@@ -118,8 +118,7 @@ gulp.task('styles', function() {
     .pipe(plumber())
     .pipe(sass({
         includePaths: [
-            config.bowerDir + '/bootstrap-sass/assets/stylesheets',
-            config.bowerDir + '/font-awesome/scss',
+            config.bowerDir
         ]
     }))
     .pipe(autoprefixer())
