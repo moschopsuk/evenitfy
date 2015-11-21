@@ -1,17 +1,18 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var gulpif = require('gulp-if');
-var streamify = require('gulp-streamify');
-var autoprefixer = require('gulp-autoprefixer');
-var cssmin = require('gulp-cssmin');
-var sass = require('gulp-sass');
-var concat = require('gulp-concat');
-var plumber = require('gulp-plumber');
-var source = require('vinyl-source-stream');
-var babelify = require('babelify');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var uglify = require('gulp-uglify');
+var gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    gulpif = require('gulp-if'),
+    streamify = require('gulp-streamify'),
+    autoprefixer = require('gulp-autoprefixer'),
+    cssmin = require('gulp-cssmin'),
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
+    plumber = require('gulp-plumber'),
+    source = require('vinyl-source-stream'),
+    babelify = require('babelify'),
+    browserify = require('browserify'),
+    watchify = require('watchify'),
+    uglify = require('gulp-uglify'),
+    mocha   = require('gulp-mocha');
 
 var production = process.env.NODE_ENV === 'production';
 
@@ -129,6 +130,18 @@ gulp.task('styles', function() {
 gulp.task('watch', function() {
   gulp.watch(['app/styles/*.scss', 'app/styles/**/*.scss'], ['styles']);
 });
+
+
+/*
+ |--------------------------------------------------------------------------
+ | Tests
+ |--------------------------------------------------------------------------
+ */
+ gulp.task('test', function () {
+     return gulp.src('tests/model/*-spec.js', {read: false})
+         .pipe(mocha({reporter: 'spec'}));
+ });
+
 
 gulp.task('default', ['styles', 'icons', 'vendor', 'browserify-watch', 'watch']);
 gulp.task('build', ['styles', 'icons', 'vendor', 'browserify']);
