@@ -1,10 +1,13 @@
-var express = require('express'),
-    path = require('path'),
-    logger = require('morgan'),
-    passport = require('passport'),
-    session = require('express-session'),
-    flash = require('express-flash'),
-    bodyParser = require('body-parser');
+var express     = require('express'),
+    path        = require('path'),
+    logger      = require('morgan'),
+    passport    = require('passport'),
+    session     = require('express-session'),
+    flash       = require('express-flash'),
+    env         = require('node-env-file'),
+    mongoose    = require('mongoose'),
+    colors      = require('colors'),
+    bodyParser  = require('body-parser');
 
 var app = express();
 
@@ -53,18 +56,24 @@ app.use(function(req, res, next){
 });
 
 //pretty html in dev env
-if (app.get('env') === 'dev') {
+if (app.get('env') === 'development') {
     app.locals.pretty = true;
 }
 
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: (app.get('env') === 'development') ? err : {}
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: (app.get('env') === 'development') ? err : {}
+    });
 });
 
 app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+    if (app.get('env') === 'production') {
+        console.log('Running in production mode'.green);
+    } else {
+        console.log('Running in development mode'.yellow);
+    }
+
+    console.log('Express server listening on port ' + app.get('port'));
 });
