@@ -1,15 +1,10 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-
-//reactvar swig  = require('swig');
-var React = require('react');
-var ReactDOM = require('react-dom/server');
-var Router = require('react-router');
-var RoutingContext = Router.RoutingContext;
-var routes = require('./app/config/routes');
-var swig = require('swig');
+var express = require('express'),
+    path = require('path'),
+    logger = require('morgan'),
+    passport = require('passport'),
+    session = require('express-session'),
+    flash = require('express-flash'),
+    bodyParser = require('body-parser');
 
 var app = express();
 
@@ -25,27 +20,48 @@ function connect () {
     mongoose.connect(process.env.MONGO_DB, options);
 }
 
+//Application port
 app.set('port', process.env.PORT || 3000);
+
+//Log output to console
 app.use(logger('dev'));
+
+//Repond to POST requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+//Serv public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Set jade views
 app.set('views', path.join(__dirname, 'assets/views'));
 app.set('view engine', 'jade');
 
-app.use(function(req, res) {
-  Router.match({ routes: routes, location: req.url }, function(err, redirectLocation, renderProps) {
-    if (err) {
-      res.status(500).send(err.message)
-    } else if (redirectLocation) {
-      res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
-    } else if (renderProps) {
-      var html = ReactDOM.renderToString(<RoutingContext {...renderProps} />);
-      var page = swig.renderFile('views/index.html', { html: html });
-      res.status(200).send(page);
-    } else {
-      res.status(404).send('Page Not Found')
+//Session Management
+require('./lib/passport')(passport);
+app.use(session({ secret: 'jailbreakapp', resave: true, saveUninitialized: true }));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+//pass user object to templates
+app.use(function(req, res, next){
+    if (req.user) {
+        res.locals.user = req.user;
     }
+    next();
+});
+
+//pretty html in dev env
+if (app.get('env') === 'dev') {
+    app.locals.pretty = true;
+}
+
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: (app.get('env') === 'development') ? err : {}
   });
 });
 
