@@ -1,0 +1,49 @@
+extends ./layout.jade
+
+block title
+  |  Register
+
+block content
+
+    body.hold-transition.login-page
+      .login-box
+        .login-logo
+          a(href='../../index2.html')
+            b Event
+            | ify
+      
+        .login-box-body
+          p.login-box-msg Register an eventify account
+          form(action='../../index2.html', method='post')
+            .form-group.has-feedback
+              input.form-control(type='text', placeholder='Fullname')
+              span.form-control-feedback.fa.fa-user
+            
+            .form-group.has-feedback
+              input.form-control(type='email', placeholder='Email')
+              span.form-control-feedback.fa.fa-envelope
+              
+            .form-group.has-feedback
+              input.form-control(type='password', placeholder='Password')
+              span.form-control-feedback.fa.fa-lock
+              
+            .form-group.has-feedback
+              input.form-control(type='password', placeholder='Retype Password')
+              span.form-control-feedback.fa.fa-refresh
+              
+            .row
+              .col-xs-8
+              .col-xs-4
+                button.btn.btn-primary.btn-block.btn-flat(type='submit') Register
+            
+          a.text-center(href='/auth/login') I already have a membership
+
+block js
+  script.
+    $(function () {
+      $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+      });
+    });

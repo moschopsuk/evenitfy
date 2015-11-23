@@ -33,9 +33,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Serv public folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 //Set jade views
 app.set('views', path.join(__dirname, 'assets/views'));
 app.set('view engine', 'jade');
@@ -67,6 +64,12 @@ app.use(function(err, req, res, next) {
         error: (app.get('env') === 'development') ? err : {}
     });
 });
+
+//Express routes
+require('./routes')(express, app, passport);
+
+//Serv public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(app.get('port'), function() {
     if (app.get('env') === 'production') {

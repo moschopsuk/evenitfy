@@ -38,7 +38,9 @@ var config = {
 gulp.task('vendor', function() {
   return gulp.src([
     config.bowerDir + '/jquery/dist/jquery.js',
-    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+    config.bowerDir + '/bootstrap-sass-offical/assets/javascripts/bootstrap.js',
+    config.bowerDir + '/iCheck/icheck.js',
+    config.bowerDir + '/admin-lte.scss/app.js',
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
@@ -104,9 +106,15 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
  | Font awesome icons
  |--------------------------------------------------------------------------
  */
-gulp.task('icons', function() {
+gulp.task('icons', ['iCheck'], function() {
     return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
         .pipe(gulp.dest('./public/fonts'));
+});
+
+
+gulp.task('iCheck', function() {
+    return gulp.src([config.bowerDir + '/iCheck/skins/**/*'])
+        .pipe(gulp.dest('./public/css'));
 });
 
 /*
@@ -115,7 +123,7 @@ gulp.task('icons', function() {
  |--------------------------------------------------------------------------
  */
 gulp.task('styles', function() {
-  return gulp.src('app/styles/main.scss')
+  return gulp.src('assets/styles/main.scss')
     .pipe(plumber())
     .pipe(sass({
         includePaths: [
@@ -128,7 +136,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['app/styles/*.scss', 'app/styles/**/*.scss'], ['styles']);
+  gulp.watch(['assets/styles/*.scss', 'assets/styles/**/*.scss'], ['styles']);
 });
 
 
