@@ -38,9 +38,7 @@ var config = {
 gulp.task('vendor', function() {
   return gulp.src([
     config.bowerDir + '/jquery/dist/jquery.js',
-    config.bowerDir + '/bootstrap-sass-offical/assets/javascripts/bootstrap.js',
-    config.bowerDir + '/iCheck/icheck.js',
-    config.bowerDir + '/admin-lte.scss/app.js',
+    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
@@ -106,16 +104,26 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
  | Font awesome icons
  |--------------------------------------------------------------------------
  */
-gulp.task('icons', ['iCheck'], function() {
+gulp.task('icons', function() {
     return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
         .pipe(gulp.dest('./public/fonts'));
 });
 
+/*
+ |--------------------------------------------------------------------------
+ | Fonts
+ |--------------------------------------------------------------------------
+ */
 
-gulp.task('iCheck', function() {
-    return gulp.src([config.bowerDir + '/iCheck/skins/**/*'])
-        .pipe(gulp.dest('./public/css'));
+ gulp.task('fonts', ['admin-fonts'], function() {
+    return gulp.src(config.bowerDir + '/bootstrap-sass/assets/fonts/*/**')
+        .pipe(gulp.dest('./public/fonts'));
 });
+
+ gulp.task('admin-fonts', function() {
+    return gulp.src(config.bowerDir + '/rdash-ui/dist/fonts/**.*')
+        .pipe(gulp.dest('./public/fonts'));
+ });
 
 /*
  |--------------------------------------------------------------------------
@@ -123,7 +131,7 @@ gulp.task('iCheck', function() {
  |--------------------------------------------------------------------------
  */
 gulp.task('styles', function() {
-  return gulp.src('assets/styles/main.scss')
+  return gulp.src(['assets/styles/app.scss', 'assets/styles/admin.scss'])
     .pipe(plumber())
     .pipe(sass({
         includePaths: [
@@ -146,10 +154,10 @@ gulp.task('watch', function() {
  |--------------------------------------------------------------------------
  */
  gulp.task('test', function () {
-     return gulp.src('tests/model/*-spec.js', {read: false})
-         .pipe(mocha({reporter: 'spec'}));
+    return gulp.src('tests/model/*-spec.js', {read: false})
+        .pipe(mocha({reporter: 'spec'}));
  });
 
 
-gulp.task('default', ['styles', 'icons', 'vendor', 'browserify-watch', 'watch']);
-gulp.task('build', ['styles', 'icons', 'vendor', 'browserify']);
+gulp.task('default', ['styles', 'icons', 'fonts', 'vendor', 'browserify-watch', 'watch']);
+gulp.task('build', ['styles', 'icons', 'fonts', 'vendor', 'browserify']);

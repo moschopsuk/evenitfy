@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "font-awesome": "fontawesome#~4.4.0",
-    "admin-lte.scss": "~3.1.2",
-    "iCheck": "icheck#~1.0.2"
+    "rdash-ui": "~1.0.1",
+    "bootstrap-sass": "~3.3.5"
   }
 }

@@ -1,0 +1,16 @@
+//fonts
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300);
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+
+//Bower scss
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+@import "font-awesome/scss/font-awesome.scss";
+
+//Frontend styles
+@import "components/header";
+@import "components/footer";
+@import "components/fontend";
+@import "components/timeline";
+@import "components/vote";
+@import "components/tags";
+@import "components/auth";

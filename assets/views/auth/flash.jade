@@ -1,0 +1,31 @@
+if messages.errors
+    for error in messages.errors
+      .alert.alert-danger.alert-dismissible(role='alert')
+        button.close(type='button', data-dismiss='alert', aria-label='Close')
+          span(aria-hidden='true') ×
+        span.glyphicon.glyphicon-info-sign
+        |  #{error}
+        
+if messages.warnings
+    for warning in messages.warnings
+      .alert.alert-warning.alert-dismissible(role='alert')
+        button.close(type='button', data-dismiss='alert', aria-label='Close')
+          span(aria-hidden='true') ×
+        span.glyphicon.glyphicon-alert
+        |  #{warning}
+        
+if messages.info
+    for info in messages.info
+      .alert.alert-info.alert-dismissible(role='alert')
+        button.close(type='button', data-dismiss='alert', aria-label='Close')
+          span(aria-hidden='true') ×
+        span.glyphicon.glyphicon-exclamation-sign
+        |  #{info}
+
+if messages.success
+    for success in messages.success
+      .alert.alert-success.alert-dismissible(role='alert')
+        button.close(type='button', data-dismiss='alert', aria-label='Close')
+          span(aria-hidden='true') ×
+        span.glyphicon.glyphicon-ok
+        |  #{success}

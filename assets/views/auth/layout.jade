@@ -3,13 +3,20 @@ html
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/all.css')
+    link(rel='stylesheet', href='/css/app.css')
     title Eventify |
       block title
   
   body
-    block content
-    
-    script(src='/js/vendor.js')
-    block js
+    .container
+      .login-logo
+        a(href='/')
+          b Event
+          | IFY
+      .card.card-container
+        img#profile-img.profile-img-card(src='/images/avatar.png')
+        p#profile-name.profile-name-card
+        
+        include flash
+        
+        block content
