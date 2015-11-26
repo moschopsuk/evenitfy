@@ -1,2 +1,15 @@
 @import "bootstrap-sass/assets/stylesheets/bootstrap";
-@import "rdash-ui/dist/css/rdash";
+@import "font-awesome/scss/font-awesome.scss";
+
+@import "admin/main";
+@import "admin/loader";
+@import "admin/content";
+@import "admin/header";
+@import "admin/sidebar";
+@import "admin/widgets";
+
+.alert {
+    .glyphicon {
+        padding-right: 5px;
+    }
+}

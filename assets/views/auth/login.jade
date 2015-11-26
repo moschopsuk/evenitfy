@@ -8,10 +8,11 @@ block content
    span#reauth-email.reauth-email
    input#login-username.form-control(type='email', placeholder='Email', name='email', autofocus='')
    input#login-password.form-control(type='password', placeholder='Password', name='password')
-   #remember.checkbox
-     label
-       input(type='checkbox', value='remember')
-       |  Remember Me
+   #remember.checkbox.checkbox-success
+      input#rember-box(type='checkbox')
+      label(for='rember-box')
+        | Remember Me
+
     button.btn.btn-lg.btn-success.btn-block.btn-signin(type='submit') Login
   a.forgot-password(href='/auth/register')
     | Not registered, click here

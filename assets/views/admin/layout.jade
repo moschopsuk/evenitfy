@@ -1,0 +1,73 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='/css/admin.css')
+    title Dashboard
+    
+    
+    body.hamburg
+      #page-wrapper.open
+
+        #sidebar-wrapper
+          ul.sidebar
+            li#toggle-sidebar.sidebar-main
+              a(href='#')
+                | Eventify
+                span.menu-icon.glyphicon.glyphicon-transfer
+            li.sidebar-title
+              span NAVIGATION
+            li.sidebar-list
+              a(href='#')
+                | Dashboard 
+                span.menu-icon.fa.fa-tachometer
+
+    
+        #content-wrapper
+          .page-content
+          
+            // Header Bar
+            .row.header
+              .col-xs-12
+                .user.pull-right
+                  .item.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown')
+                      img(src='/images/avatar.png')
+                    ul.dropdown-menu.dropdown-menu-right
+                      li.dropdown-header
+                        | #{user.fullname}
+                      li.divider
+                      li.link
+                        a(href='#')
+                          | Profile
+                      li.link
+                        a(href='#')
+                          | Menu Item
+                      li.divider
+                      li.link
+                        a(href='/auth/logout')
+                          | Logout
+                  .item.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown')
+                      i.fa.fa-bell-o
+                    ul.dropdown-menu.dropdown-menu-right
+                      li.dropdown-header
+                        | Notifications
+                      li.divider
+                      li
+                        a(href='#') Server Down!
+                .meta
+                  .page
+                    | Dashboard
+                  .breadcrumb-links
+                    | Home / Dashboard
+            
+            include flash
+            block content
+        
+      script(src='/js/vendor.js')
+      script.
+        $( document ).ready(function() {
+          App.init();
+        });

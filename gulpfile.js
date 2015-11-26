@@ -39,6 +39,7 @@ gulp.task('vendor', function() {
   return gulp.src([
     config.bowerDir + '/jquery/dist/jquery.js',
     config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+    'assets/js/dashboard.js',
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
