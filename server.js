@@ -7,6 +7,7 @@ var express     = require('express'),
     env         = require('node-env-file'),
     mongoose    = require('mongoose'),
     colors      = require('colors'),
+    breadcrumbs = require('express-breadcrumbs'),
     bodyParser  = require('body-parser');
 
 var app = express();
@@ -29,6 +30,9 @@ app.set('port', process.env.PORT || 3000);
 //Log output to console
 app.use(logger('dev'));
 
+//breadcrumbs
+app.use(breadcrumbs.init());
+
 //Repond to POST requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -46,9 +50,12 @@ app.use(passport.session());
 
 //pass user object to templates
 app.use(function(req, res, next){
+    res.locals.breadcrumbs = req.breadcrumbs();
+
     if (req.user) {
         res.locals.user = req.user;
     }
+
     next();
 });
 

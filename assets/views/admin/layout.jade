@@ -4,8 +4,8 @@ html(lang='en')
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/css/admin.css')
-    title Dashboard
-    
+    title Admin |
+      block title
     
     body.hamburg
       #page-wrapper.open
@@ -19,10 +19,17 @@ html(lang='en')
             li.sidebar-title
               span NAVIGATION
             li.sidebar-list
-              a(href='#')
+              a(href='/admin')
                 | Dashboard 
                 span.menu-icon.fa.fa-tachometer
-
+            li.sidebar-list
+              a(href='/admin/events')
+                | Events 
+                span.menu-icon.fa.fa-cubes
+            li.sidebar-list
+              a(href='/admin/users')
+                | Users 
+                span.menu-icon.fa.fa-users
     
         #content-wrapper
           .page-content
@@ -61,7 +68,9 @@ html(lang='en')
                   .page
                     | Dashboard
                   .breadcrumb-links
-                    | Home / Dashboard
+                    each breadcrumb in breadcrumbs
+                      a(href="#{breadcrumb.url}") #{breadcrumb.name}
+                      |  / 
             
             include flash
             block content
