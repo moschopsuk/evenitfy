@@ -1,0 +1,34 @@
+extends ../layout.jade
+
+block title
+  |  Users
+  
+block content
+  .row
+    .col-lg-12
+      .widget
+        .widget-title
+          i.fa.fa-users
+          |  Users
+          .pull-right
+            a.btn.btn-sm.btn-success(href='#')
+              i.fa.fa-plus
+              |  New User
+        .widget-body.auto.no-padding
+          .table-responsive
+            table.table
+              thead
+                tr
+                  th RDVMPC001
+                  th 238.103.133.37
+                  th
+                    span.text-success
+                      i.fa.fa-check
+                      
+              tbody
+                tr
+                  td RDVMPC002
+                  td 68.66.63.170
+                  td
+                    span.text-success
+                      i.fa.fa-check

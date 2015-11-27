@@ -8,6 +8,7 @@
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     border-color: #e9e9e9;
+
     .widget-title {
         color: #767676;
         background-color: #f6f6f6;
@@ -21,6 +22,7 @@
             width: 25%;
         }
     }
+
     .widget-body {
         padding: 20px;
         table {
@@ -46,6 +48,17 @@
             margin-bottom: 10px;
         }
     }
+    .widget-body.auto {
+        height: auto;
+
+        table {
+            margin-bottom: 0px;
+        }
+
+        .table-responsive {
+            margin-bottom: 0px;
+        }
+    }
     .widget-body.large {
         height: 350px;
         overflow-y: auto;
@@ -61,6 +74,7 @@
     .widget-body.no-padding {
         padding: 0;
     }
+
     .widget-icon {
         background: #30426a;
         width: 65px;
