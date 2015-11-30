@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
     email:      { type: String, required: true, index: { unique: true } },
     password:   { type: String, required: true },
-    fullname:   { type: String }
+    fullname:   { type: String },
+    lastIP:     { type: String },
+    lastLogin:  { type: Date },
+    roles:      { type:  Array }
 });
 
 UserSchema.pre('save', function(next) {
@@ -32,6 +35,19 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
+};
+
+UserSchema.methods.hasRole = function (role) {
+    for (var i = 0; i < this.roles.length; i++) {
+        if (this.roles[i] === role) {
+            // if the role that we are chekign matches the 'role' we are
+            // looking for return true
+            return true;
+        }
+
+    };
+    // if the role does not match return false
+    return false;
 };
 
 module.exports = mongoose.model('User', UserSchema);

@@ -19,16 +19,19 @@ block content
             table.table
               thead
                 tr
-                  th RDVMPC001
-                  th 238.103.133.37
+                  th Name.
+                  th Email.
                   th
                     span.text-success
                       i.fa.fa-check
-                      
               tbody
-                tr
-                  td RDVMPC002
-                  td 68.66.63.170
-                  td
-                    span.text-success
-                      i.fa.fa-check
+              
+                if (users && users.length)
+                  each user in users
+                              
+                      tr
+                        td #{user.fullname}
+                        td #{user.email}
+                        td
+                          span.text-success
+                            i.fa.fa-check
