@@ -1,4 +1,4 @@
-var App = function ($) {
+var App = function ($, Cookies) {
     var app = {},
         MOBILE_VIEW = 992;
 
@@ -29,15 +29,24 @@ var App = function ($) {
 
     app.toggleSidebar = function (e) {
         this.$pageWrapper.toggleClass('active');
+         Cookies.set('toggle-sidebar', this.$pageWrapper.hasClass("active"));
     };
 
     app.checkViewport = function () {
         if (getWidth() >= MOBILE_VIEW) {
-            this.$pageWrapper.addClass("active");
+            if (Cookies.get('toggle-sidebar') === undefined) {
+                this.$pageWrapper.addClass("active");
+            } else {
+                if(Cookies.get('toggle-sidebar') == 'true') {
+                    this.$pageWrapper.addClass("active");
+                } else {
+                    this.$pageWrapper.removeClass("active");
+                }
+            }
         } else {
             this.$pageWrapper.removeClass("active");
         }
     };
 
     return app;
-}(jQuery);
+}(jQuery, Cookies);

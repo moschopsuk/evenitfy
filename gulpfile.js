@@ -38,6 +38,7 @@ var config = {
 gulp.task('vendor', function() {
   return gulp.src([
     config.bowerDir + '/jquery/dist/jquery.js',
+    config.bowerDir + '/js-cookie/src/js.cookie.js',
     config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
     'assets/js/dashboard.js',
   ]).pipe(concat('vendor.js'))

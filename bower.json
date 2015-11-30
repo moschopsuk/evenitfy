@@ -19,6 +19,7 @@
   "dependencies": {
     "font-awesome": "fontawesome#~4.4.0",
     "rdash-ui": "~1.0.1",
-    "bootstrap-sass": "~3.3.5"
+    "bootstrap-sass": "~3.3.5",
+    "js-cookie": "~2.0.4"
   }
 }
