@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     gulpif = require('gulp-if'),
+    rename = require('gulp-rename'),
     streamify = require('gulp-streamify'),
     autoprefixer = require('gulp-autoprefixer'),
     cssmin = require('gulp-cssmin'),
@@ -8,6 +9,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     plumber = require('gulp-plumber'),
     source = require('vinyl-source-stream'),
+    glob = require('glob'),
+    es = require('event-stream'),
     babelify = require('babelify'),
     browserify = require('browserify'),
     watchify = require('watchify'),
@@ -27,7 +30,7 @@ var dependencies = [
 
 var config = {
     bowerDir: './bower_components'
-}
+};
 
 /*
  |--------------------------------------------------------------------------
@@ -48,31 +51,29 @@ gulp.task('vendor', function() {
 
 /*
  |--------------------------------------------------------------------------
- | Compile third-party dependencies separately for faster performance.
- |--------------------------------------------------------------------------
- */
-gulp.task('browserify-vendor', function() {
-  return browserify()
-    .require(dependencies)
-    .bundle()
-    .pipe(source('vendor.bundle.js'))
-    .pipe(gulpif(production, streamify(uglify({ mangle: false }))))
-    .pipe(gulp.dest('public/js'));
-});
-
-/*
- |--------------------------------------------------------------------------
  | Compile only project files, excluding all third-party dependencies.
  |--------------------------------------------------------------------------
  */
-gulp.task('browserify', ['browserify-vendor'], function() {
-  return browserify('app/main.js')
-    .external(dependencies)
-    .transform(babelify)
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulpif(production, streamify(uglify({ mangle: false }))))
-    .pipe(gulp.dest('public/js'));
+gulp.task('browserify', function(done) {
+     glob('./assets/react/**/app-*.jsx', function(err, files) {
+        if(err) done(err);
+        var tasks = files.map(function(entry) {
+            return browserify({ entries: [entry] })
+                .transform(babelify)
+                .bundle()
+                .on('end', function() {
+                    gutil.log(gutil.colors.blue('Bundled:', entry));
+                })
+                .pipe(source(entry))
+                .pipe(rename({
+                    dirname: "/",
+                    extname: '.bundle.js'
+                }))
+                .pipe(gulpif(production, uglify({ mangle: false })))
+                .pipe(gulp.dest('./public/js/'));
+            });
+        es.merge(tasks).on('end', done);
+    });
 });
 
 /*
@@ -80,7 +81,36 @@ gulp.task('browserify', ['browserify-vendor'], function() {
  | Same as browserify task, but will also watch for changes and re-compile.
  |--------------------------------------------------------------------------
  */
-gulp.task('browserify-watch', ['browserify-vendor'], function() {
+gulp.task('browserify-watch', function() {
+    glob('./assets/react/**/app-*.jsx', function(err, files) {
+        if(err) done(err);
+        var tasks = files.map(function(entry) {
+             var bundler = watchify(browserify({ entries: [entry] }, watchify.args));
+             bundler.transform(babelify);
+             bundler.on('update', rebundle);
+
+             function rebundle() {
+                var start = Date.now();
+                return bundler.bundle()
+                .on('error', function(err) {
+                    gutil.log(gutil.colors.red(err.toString()));
+                })
+                .on('end', function() {
+                    gutil.log(gutil.colors.blue('Bundled:', entry));
+                    gutil.log(gutil.colors.green('Finished rebundling in', (Date.now() - start) + 'ms.'));
+                })
+                .pipe(source(entry))
+                .pipe(rename({
+                    dirname: "/",
+                    extname: '.bundle.js'
+                }));
+             }
+
+            return rebundle();
+        });
+    });
+});
+/*
   var bundler = watchify(browserify('app/main.js', watchify.args));
   bundler.external(dependencies);
   bundler.transform(babelify);
@@ -99,7 +129,7 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
       .pipe(source('bundle.js'))
       .pipe(gulp.dest('public/js/'));
   }
-});
+});*/
 
 /*
  |--------------------------------------------------------------------------

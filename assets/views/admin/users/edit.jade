@@ -1,0 +1,69 @@
+extends ../layout.jade
+
+block title
+  |  User | #{user.email}
+  
+block content
+  form
+    .row
+      .col-lg-6
+        .widget
+          .widget-title
+            i.fa.fa-users
+            |  General Settings
+          .widget-body
+            .form-group
+              label.control-label(for='email') Name
+              input#email.form-control(type='email', value=user.fullname, placeholder='Name')
+            .form-group
+              label.control-label(for='fullname') Email
+              input#fullname.form-control(type='text', value=user.email, placeholder='Email')
+          
+
+      .col-lg-6
+        .widget
+          .widget-title
+            i.fa.fa-tasks
+            |  Avatar
+          .widget-body
+            #avatar-upload
+          
+    .row      
+      .col-lg-6
+        .widget
+          .widget-title
+            i.fa.fa-lock
+            |  Password
+          .widget-body
+          
+            .alert.alert-info
+              span.glyphicon.glyphicon-info-sign
+              | Enter old password to make changes
+              
+            .form-group
+              label.control-label(for='old-pass') Old Password
+              input#old-pass.form-control(type='password', placeholder='Old Password')
+            .form-group
+              label.control-label(for='new-pass') New Password
+              input#new-pass.form-control(type='password', placeholder='New Password')
+            .form-group
+              label.control-label(for='conf-pass') Confirm Password
+              input#conf-pass.form-control(type='password', placeholder='Confirm Password')
+          
+      .col-lg-6
+        .widget
+          .widget-title
+            i.fa.fa-tasks
+            |  Roles/Permissons
+          .widget-body.auto.no-padding
+          
+    .row
+      .col-xs-12
+        .widget
+          .widget-body.clearfix
+            .pull-right.btn-toolbar
+              a.btn.btn-info(href='/admin/users') Back
+              a.btn.btn-success(href='#') Save
+
+block js
+  script(src='/js/app-avatar.bundle.js')
